@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'screen/detail.dart';
+import 'screen/studentdetail/detail.dart';
+import 'screen/course/course.dart';
 
 void main() {
   runApp(const MyApp());
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       initialRoute: '/',
       routes: {
-        'detail': (context) => const StudentDetail(name: "", imgUrl: ""),
+        'course': (context) => CoursePage(),
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -102,8 +103,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-  String _emojis = "";
 
   void _incrementCounter() {
     setState(() {
@@ -112,11 +111,6 @@ class _MyHomePageState extends State<MyHomePage> {
       // so that the display can reflect the updated values. If we changed
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
-      _counter++;
-
-      if (_counter % 3 == 0) {
-        _emojis += '😄';
-      }
     });
   }
 
@@ -199,11 +193,19 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               title: const Text("Home"),
-              onTap: () {},
+              onTap: () {
+                Navigator.pop(context,'/');
+              },
             ),
             ListTile(
               title: const Text("Profile"),
               onTap: () {},
+            ),
+            ListTile(
+              title: const Text("Course"),
+              onTap: () {
+                Navigator.popAndPushNamed(context, 'course');
+              },
             ),
             ListTile(
               title: const Text("Option"),
@@ -212,7 +214,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: const Text("About Us"),
               onTap: () {
-                Navigator.popAndPushNamed(context, "/about");
+                Navigator.popAndPushNamed(context, "about");
               },
             ),
           ],
