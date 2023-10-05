@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:worldisrough/library/gamesettings.dart';
+import '/pages/setup/Setup.dart';
 
-import 'screen/studentdetail/detail.dart';
-import 'screen/course/course.dart';
+import 'pages/studentdetail/detail.dart';
+import 'pages/course/course.dart';
 
 void main() {
+  GameSettings();
   runApp(const MyApp());
 }
 
@@ -59,6 +62,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         'course': (context) => CoursePage(),
+        'setup': (context) => const SetupPage(),
       },
       theme: ThemeData(
         // This is the theme of your application.
@@ -103,7 +107,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   void _incrementCounter() {
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -194,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: const Text("Home"),
               onTap: () {
-                Navigator.pop(context,'/');
+                Navigator.pop(context, '/');
               },
             ),
             ListTile(
@@ -209,7 +212,9 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ListTile(
               title: const Text("Option"),
-              onTap: () {},
+              onTap: () {
+                Navigator.popAndPushNamed(context, 'setup');
+              },
             ),
             ListTile(
               title: const Text("About Us"),
