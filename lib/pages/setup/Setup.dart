@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:worldisrough/library/gamesettings.dart';
 import 'package:worldisrough/pages/gameplay/gameplay.dart';
-import 'package:worldisrough/pages/gameresult/gameresult.dart';
 
 class SetupPage extends StatefulWidget {
   const SetupPage({super.key});
@@ -12,7 +11,7 @@ class SetupPage extends StatefulWidget {
 
 class _SetupPageState extends State<SetupPage> {
   final _formKey = GlobalKey<FormState>();
-  int? selectedDifficulty;
+  int? selectedDifficulty = 0;
 
   //game settings singletone
   final gameSettings = GameSettings();
@@ -22,11 +21,26 @@ class _SetupPageState extends State<SetupPage> {
   final name2Controller = TextEditingController();
   final roundController = TextEditingController();
 
+
+  @override
+  void initState() {
+    super.initState();
+    gameSettings.getDataFromPref();
+    name1Controller.text = gameSettings.player1Name!;
+    name2Controller.text = gameSettings.player2Name!;
+    selectedDifficulty = gameSettings.difficulty;
+    if (gameSettings.totalRound == null) {
+      roundController.text = "";
+    } else {
+      roundController.text = gameSettings.totalRound.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Setup Gameplay"),
+        title: const Text("Mati Murup The Game"),
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -79,7 +93,7 @@ class _SetupPageState extends State<SetupPage> {
                     if (value == null || value.isEmpty) {
                       return 'Required total round';
                     }
-                    if(int.parse(value) > 10 || int.parse(value) < 1){
+                    if (int.parse(value) > 10 || int.parse(value) < 1) {
                       return 'Total round must greater than 0 with maximum 10 round';
                     }
                     return null;
@@ -99,8 +113,11 @@ class _SetupPageState extends State<SetupPage> {
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.grey),
                         borderRadius:
-                            const BorderRadius.all(Radius.circular(16))),
-                    width: MediaQuery.of(context).size.width,
+                        const BorderRadius.all(Radius.circular(16))),
+                    width: MediaQuery
+                        .of(context)
+                        .size
+                        .width,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: DropdownButtonHideUnderline(
@@ -162,7 +179,8 @@ class _SetupPageState extends State<SetupPage> {
                     }
 
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Validation OK : Playing pattern on 3 seconds...')),
+                      const SnackBar(content: Text(
+                          'Validation OK : Playing pattern on 3 seconds...')),
                     );
 
                     gameSettings.player1Name = name1Controller.text;
@@ -170,15 +188,21 @@ class _SetupPageState extends State<SetupPage> {
                     gameSettings.totalRound = int.parse(roundController.text);
                     gameSettings.difficulty = selectedDifficulty;
                     gameSettings.playedRound = 0;
+                    gameSettings.listOfScore = [];
+                    gameSettings.saveIntoPref();
 
                     Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => GamePlay()));
+                        MaterialPageRoute(
+                            builder: (context) => const GamePlay()));
                   },
                   style: ElevatedButton.styleFrom(
                       elevation: 2,
                       backgroundColor: Colors.black,
                       textStyle: const TextStyle(fontSize: 16),
-                      minimumSize: Size(MediaQuery.of(context).size.width, 56)),
+                      minimumSize: Size(MediaQuery
+                          .of(context)
+                          .size
+                          .width, 56)),
                   child: const Text(
                     'Start Playing',
                     style: TextStyle(color: Colors.white),

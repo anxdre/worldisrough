@@ -1,11 +1,10 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:collection/collection.dart';
-
 import 'package:flutter/material.dart';
-import 'package:worldisrough/pages/gameplay/gamescore.dart';
-import 'package:worldisrough/pages/gameresult/gameresult.dart';
-
+import 'package:worldisrough/library/gamescore.dart';
+import 'package:worldisrough/pages/roundresult/roundresult.dart';
 import 'package:worldisrough/widgets/cpad/containerpad.dart';
 import 'package:worldisrough/widgets/cpad/cpadcontroller.dart';
 
@@ -26,12 +25,12 @@ class _GamePlayState extends State<GamePlay> {
   final listOfStep = [];
   final listOfUserStep = [];
   var padEnabled = false;
-  var padTitle = "Memorize the pattern";
+  var padMsgTitle = "Memorize the pattern";
 
   @override
   void initState() {
     gameSettings.playedRound++;
-    gameScore = GameScore(gameSettings.playedRound);
+    gameScore = GameScore(gameSettings.playedRound,gameSettings.totalRound!);
     for (int i = 0; i < 9; i++) {
       _listOfPadController.add(CpadController(i));
     }
@@ -62,7 +61,7 @@ class _GamePlayState extends State<GamePlay> {
               Text("${gameSettings.player2Name} turn",
                   style: TextStyle(fontSize: 16)),
             Text(
-              padTitle,
+              padMsgTitle,
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             SizedBox(
@@ -103,9 +102,9 @@ class _GamePlayState extends State<GamePlay> {
   }
 
   playStep() async {
-    padEnabled = false;
     setState(() {
-      padTitle = "Memorize the pattern";
+      padEnabled = false;
+      padMsgTitle = "Memorize the pattern";
     });
     for (var i = 0; i < listOfStep.length; i++) {
       await Future.delayed(const Duration(milliseconds: 200), () {
@@ -119,9 +118,9 @@ class _GamePlayState extends State<GamePlay> {
         });
       });
     }
-    padEnabled = true;
     setState(() {
-      padTitle = "Enter the pattern";
+      padEnabled = true;
+      padMsgTitle = "Enter the pattern";
     });
   }
 
@@ -176,7 +175,7 @@ class _GamePlayState extends State<GamePlay> {
     listOfUserStep.clear();
     if (playerTurn == 2) {
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => GameResult()));
+          context, MaterialPageRoute(builder: (context) => RoundResult(result: gameScore)));
       return;
     }
     setState(() {
@@ -232,13 +231,19 @@ class _GamePlayState extends State<GamePlay> {
 
   validateWinner() {
     if (gameScore.player1Answer! && gameScore.player2Answer! == false) {
-      gameScore.finalResult = gameSettings.player1Name!;
+      gameScore.finalResult = gameSettings.player1Name! + " Win";
       return;
     }
 
     if (gameScore.player1Answer! == false && gameScore.player2Answer!) {
-      gameScore.finalResult = gameSettings.player2Name!;
+      gameScore.finalResult = gameSettings.player2Name! + " Win";
       return;
     }
+  }
+
+  @override
+  void dispose() {
+    _listOfPadController.clear();
+    super.dispose();
   }
 }
