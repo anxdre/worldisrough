@@ -34,18 +34,9 @@ class GameResultPage extends StatelessWidget {
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Container(
-                  width: MediaQuery
-                      .of(context)
-                      .size
-                      .width,
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height * 0.5,
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(16))),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height * 0.6,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
@@ -56,8 +47,7 @@ class GameResultPage extends StatelessWidget {
                           textAlign: TextAlign.center,
                         ),
                         Text(
-                          "${gameSettings.player1Name} Vs ${gameSettings
-                              .player2Name}",
+                          "${gameSettings.player1Name} Vs ${gameSettings.player2Name}",
                           style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
@@ -78,7 +68,7 @@ class GameResultPage extends StatelessWidget {
                                           Card(
                                             child: Padding(
                                               padding:
-                                              const EdgeInsets.all(8.0),
+                                                  const EdgeInsets.all(8.0),
                                               child: Column(
                                                 children: [
                                                   Text("Round"),
@@ -86,7 +76,7 @@ class GameResultPage extends StatelessWidget {
                                                     item.round.toString(),
                                                     style: TextStyle(
                                                         fontWeight:
-                                                        FontWeight.bold),
+                                                            FontWeight.bold),
                                                   )
                                                 ],
                                               ),
@@ -125,19 +115,20 @@ class GameResultPage extends StatelessWidget {
                       child: FilledButton(
                         onPressed: () {
                           gameSettings.clearGameRound();
-                          Navigator.pushReplacement(context, MaterialPageRoute(
-                              builder: (context) => const GamePage()));
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const GamePage()));
                         },
                         child: Text(
                           "Play Again",
                           style: TextStyle(color: Colors.black, fontSize: 16),
                         ),
                         style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors
-                                .blue)),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.blue)),
                       ),
                     ),
-
                     Padding(
                       padding: const EdgeInsets.only(right: 16.0),
                       child: OutlinedButton(
